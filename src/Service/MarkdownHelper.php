@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use Knp\Bundle\MarkdownBundle\MarkdownParserInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 
 class MarkdownHelper
@@ -19,20 +20,29 @@ class MarkdownHelper
      * @var bool
      */
     private $isDebug;
+    /**
+     * @var LoggerInterface
+     */
+    private $mdLogger;
 
     public function __construct(
         CacheInterface $cache,
         MarkdownParserInterface $markdownParser,
+        LoggerInterface $mdLogger,
         bool $isDebug
     ) {
         $this->cache = $cache;
         $this->markdownParser = $markdownParser;
         $this->isDebug = $isDebug;
-        dump($this->isDebug);
+        $this->logger = $mdLogger;
     }
 
     public function parce(string $source): string
     {
+        if (strpos($source, 'cat')) {
+            $this->logger->info('May');
+        }
+
         if ($this->isDebug) {
             return $this->cache->get('macdown_'.md5($source), function () use ($source) {
                 return $this->markdownParser->transformMarkdown($source);
