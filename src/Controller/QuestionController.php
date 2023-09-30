@@ -52,6 +52,9 @@ class QuestionController extends AbstractController
         if ($this->isDebug) {
             $this->logger->info('We are in debug mode');
         }
+
+//        throw new \Exception('bad stuff happen');
+
         $answers = [
             'Make sure your cat is sitting `purrrfectly` still 🤣',
             'Honestly, I like furry shoes better than MY cat',
